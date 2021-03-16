@@ -12,8 +12,8 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
     
     private let albumCoverImageView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.layer.masksToBounds = true
-//        imageView.layer.cornerRadius = 8
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 4
         imageView.image = UIImage(systemName: "photo")
         
         imageView.contentMode = .scaleAspectFill
@@ -25,7 +25,7 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
        let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.textAlignment = .center
+        label.textAlignment = .left
         
         return label
     }()
@@ -42,13 +42,14 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 15, weight: .light)
-        label.textAlignment = .center
+        label.textAlignment = .left
         
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .secondarySystemBackground
         contentView.backgroundColor = .secondarySystemBackground
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(albumCoverImageView)
@@ -66,7 +67,7 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
         albumCoverImageView.frame = CGRect(
             x: 5,
             y: 2,
-            width: contentView.wight-4,
+            width: contentView.height-4,
             height: contentView.height-4)
         trackNameLabel.frame = CGRect(
             x: albumCoverImageView.right+10,

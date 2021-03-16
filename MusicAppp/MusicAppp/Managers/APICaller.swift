@@ -93,10 +93,7 @@ final class APICaller {
                     return
                 }
                 do {
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//                    print(json)
                     let result = try JSONDecoder().decode(NewReleasesResponse.self, from: data)
-//                    print(result)
                     completion(.success(result))
                 }
                 catch {
@@ -108,7 +105,7 @@ final class APICaller {
     }
     
     public func getFeaturedPlaylists(completion: @escaping ((Result<FeaturedPlaylistsResponse, Error>) -> Void)) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/featured-playlists?limit=50"),
+        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/featured-playlists?limit=20"),
                       type: .GET
         ) { request in
             
@@ -118,10 +115,7 @@ final class APICaller {
                 return
             }
             do {
-//                let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//                print(json)
                 let result = try JSONDecoder().decode(FeaturedPlaylistsResponse.self, from: data)
-//                print(result)
                 completion(.success(result))
             }
             catch {
@@ -142,7 +136,6 @@ final class APICaller {
                 }
                 do {
                     let result = try JSONDecoder().decode(RecommendationsResponse.self, from: data)
-//                    print(result)
                     completion(.success(result))
                 }
                 catch {
@@ -161,10 +154,7 @@ final class APICaller {
                     return
                 }
                 do {
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//                    print(json)
                     let result = try JSONDecoder().decode(RecommendedGenresResponse.self, from: data)
-//                    print(result)
                     completion(.success(result))
                 }
                 catch {
@@ -187,7 +177,6 @@ final class APICaller {
                 }
                 do {
                     let result = try JSONDecoder().decode(PlaylistDetailResponse.self, from: data)
-//                    print(result)
                     completion(.success(result))
                 }
                 catch {
@@ -209,8 +198,6 @@ final class APICaller {
                     return
                 }
                 do {
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//                    print(json)
                     let result = try JSONDecoder().decode(SearchResultResponse.self, from: data)
                     var searchResults: [SearchResult] = []
                     searchResults.append(contentsOf: result.tracks.items.compactMap({ .track(model: $0) }))
@@ -228,5 +215,4 @@ final class APICaller {
             task.resume()
         }
     }
-    
 }
