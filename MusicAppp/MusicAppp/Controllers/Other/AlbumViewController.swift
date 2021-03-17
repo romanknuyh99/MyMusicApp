@@ -1,15 +1,13 @@
 //
-//  PlaylistViewController.swift
+//  AlbumViewController.swift
 //  MusicAppp
 //
-//  Created by Roman Kniukh on 11.03.21.
+//  Created by Roman Kniukh on 17.03.21.
 //
 
 import UIKit
 
-class PlaylistViewController: UIViewController {
-    
-    private let playlist: Playlist
+class AlbumViewController: UIViewController {
     
     private let colletionView = UICollectionView(
         frame: .zero,
@@ -45,8 +43,15 @@ class PlaylistViewController: UIViewController {
             return section
     })
     )
-    init(playlist: Playlist)  {
-        self.playlist = playlist
+    
+    private var viewModels = [AlbumCollectionViewCellViewModel]()
+    private var tracks = [AudioTrack]()
+    
+    
+    private var album: Album
+    
+    init(album: Album) {
+        self.album = album
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -54,19 +59,15 @@ class PlaylistViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var viewModels = [RecommendedTrackCellViewVodel]()
-    private var tracks = [AudioTrack]()
-    
-    // MARK: - Life Cicle
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = playlist.name
+        title = album.name
         view.backgroundColor = .systemBackground
         
         view.addSubview(colletionView)
         colletionView.register(
-            RecommendedTrackCollectionViewCell.self,
-            forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier)
+            AlbumTrackCollectionViewCell.self,
+            forCellWithReuseIdentifier: AlbumTrackCollectionViewCell.identifier)
         colletionView.register(
             PlaylistHEaderCollectionReusableView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -76,33 +77,32 @@ class PlaylistViewController: UIViewController {
         colletionView.delegate = self
         colletionView.dataSource = self
         
-        APICaller.shared.getPlaylistDetails(for: playlist) { [weak self] result in
+        APICaller.shared.getAlbumDetails(for: album) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let model):
-                    //RecommendedTrackViewVodel
-                    self?.tracks = model.tracks.items.compactMap({ $0.track })
+                    //                    self?.viewModels = model.tracks.items.compactMap({ $0.track })
                     self?.viewModels = model.tracks.items.compactMap({
-                        RecommendedTrackCellViewVodel(name: $0.track.name,
-                                                      artistName: $0.track.artists.first?.name ?? "-",
-                                                      artworkURL: URL(string: $0.track.album?.images.first?.url ?? ""))
+                        AlbumCollectionViewCellViewModel(
+                            name: $0.name,
+                            artistName: $0.artists.first?.name ?? "-"
+                        )
                     })
                     self?.colletionView.reloadData()
-                    break
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         }
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         colletionView.frame = view.bounds
     }
 }
 
-extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModels.count
     }
@@ -113,17 +113,20 @@ extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RecommendedTrackCollectionViewCell.identifier,
-                for: indexPath) as? RecommendedTrackCollectionViewCell else {
+                withReuseIdentifier: AlbumTrackCollectionViewCell.identifier,
+                for: indexPath) as? AlbumTrackCollectionViewCell else {
             return UICollectionViewCell()
         }
-//        cell.backgroundColor = .red
         cell.configure(with: viewModels[indexPath.row])
         return cell
         
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
+        }
+        
         guard let header = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: PlaylistHEaderCollectionReusableView.identifier,
@@ -132,13 +135,13 @@ extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewData
         kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
         }
-        let headerViewModel = PlaylistHeaderViewViewModel(playlistName: playlist.name,
-                                                          ownerName: playlist.owner.display_name,
-                                                          description: playlist.description,
-                                                          artworkURL: URL(string: playlist.images.first?.url ?? "")
+        let headerViewModel = PlaylistHeaderViewViewModel(playlistName: album.name,
+                                                          ownerName: album.artists.first?.name,
+                                                          description: "Release Date: \(album.release_date)",
+                                                          artworkURL: URL(string: album.images.first?.url ?? "")
         )
         header.configure(with: headerViewModel)
-
+//        header.delegate = self
         return header
     }
     
@@ -151,5 +154,3 @@ extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewData
         
     }
 }
-
-
