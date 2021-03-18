@@ -254,6 +254,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             vc.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(vc, animated: true)
         case .recommendedTracks:
+//            let recommended = tracks[indexPath.row]
+//            let vc =
+//            vc.title = album.name
+//            vc.navigationItem.largeTitleDisplayMode = .never
+//            navigationController?.pushViewController(vc, animated: true)
             break
         }
     }
@@ -273,16 +278,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
-        let supplementaryViews = [
-            NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .absolute(50)
-                ),
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top
-            )
-        ]
         switch section {
         case 0:
             //Item

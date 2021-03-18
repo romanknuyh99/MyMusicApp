@@ -117,7 +117,6 @@ extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewData
                 for: indexPath) as? RecommendedTrackCollectionViewCell else {
             return UICollectionViewCell()
         }
-//        cell.backgroundColor = .red
         cell.configure(with: viewModels[indexPath.row])
         return cell
         
@@ -138,7 +137,6 @@ extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewData
                                                           artworkURL: URL(string: playlist.images.first?.url ?? "")
         )
         header.configure(with: headerViewModel)
-
         return header
     }
     
@@ -147,8 +145,7 @@ extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewData
         // Play song
         let index = indexPath.row
         let track = tracks[index]
-        PlaybackPresenter.startPlayback(from: self, track: track)
-        
+        PlaybackPresenter.shared.startPlayback(from: self, track: track)
     }
 }
 

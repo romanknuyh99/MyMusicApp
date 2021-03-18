@@ -8,16 +8,18 @@
 import Foundation
 
 final class APICaller {
+    // MARK: - Enums
+    enum APIError: Error {
+        case faileadToGetData
+    }
+    
+    // MARK: - Variables
     static let shared = APICaller()
     
     private init() {}
     
     struct Constants {
         static let baseAPIURL = "https://api.spotify.com/v1"
-    }
-    
-    enum APIError: Error {
-        case faileadToGetData
     }
     
     // MARK: - Private
@@ -51,7 +53,6 @@ final class APICaller {
                 }
                 do {
                     let result = try JSONDecoder().decode(AllCategoriesResponse.self, from: data)
-//                    print(result.categories.items)
                     comletion(.success(result.categories.items))
                 }
                 catch {
@@ -74,8 +75,6 @@ final class APICaller {
                     let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
                     let playlists = result.playlists.items
                     comletion(.success(playlists))
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//                    print(json)
                 }
                 catch {
                     comletion(.failure(error))
@@ -167,7 +166,6 @@ final class APICaller {
     }
     
     // MARK: - Playlists
-    
     public func getPlaylistDetails(for playlist: Playlist, completion: @escaping ((Result<PlaylistDetailResponse, Error>)) -> Void) {
         createRequest(with: URL(string: Constants.baseAPIURL + "/playlists/" + playlist.id),
                       type: .GET) { request in
@@ -200,7 +198,6 @@ final class APICaller {
                 }
                 do {
                     let result = try JSONDecoder().decode(AlbumDetailResponse.self, from: data)
-                    print(result)
                     completion(.success(result))
                 }
                 catch {
@@ -225,7 +222,6 @@ final class APICaller {
                     var searchResults: [SearchResult] = []
                     searchResults.append(contentsOf: result.tracks.items.compactMap({ .track(model: $0) }))
                     searchResults.append(contentsOf: result.albums.items.compactMap({ .album(model: $0) }))
-                    searchResults.append(contentsOf: result.artists.items.compactMap({ .artist(model: $0) }))
                     searchResults.append(contentsOf: result.playlists.items.compactMap({ .playlist(model: $0) }))
                     
                     completion(.success(searchResults))

@@ -8,7 +8,12 @@
 import UIKit
 
 class AlbumViewController: UIViewController {
+    // MARK: - Variables
+    private var viewModels = [AlbumCollectionViewCellViewModel]()
+    private var tracks = [AudioTrack]()
+    private var album: Album
     
+    //MARK: - GUI Variables
     private let colletionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _, _ -> NSCollectionLayoutSection? in
@@ -44,12 +49,7 @@ class AlbumViewController: UIViewController {
     })
     )
     
-    private var viewModels = [AlbumCollectionViewCellViewModel]()
-    private var tracks = [AudioTrack]()
-    
-    
-    private var album: Album
-    
+    // MARK: - Init
     init(album: Album) {
         self.album = album
         super.init(nibName: nil, bundle: nil)
@@ -59,6 +59,7 @@ class AlbumViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cicle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = album.name
@@ -81,7 +82,7 @@ class AlbumViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let model):
-                    //                    self?.viewModels = model.tracks.items.compactMap({ $0.track })
+                    self?.tracks = model.tracks.items
                     self?.viewModels = model.tracks.items.compactMap({
                         AlbumCollectionViewCellViewModel(
                             name: $0.name,
@@ -141,16 +142,18 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
                                                           artworkURL: URL(string: album.images.first?.url ?? "")
         )
         header.configure(with: headerViewModel)
-//        header.delegate = self
         return header
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         // Play song
-        let index = indexPath.row
-        let track = tracks[index]
-        PlaybackPresenter.startPlayback(from: self, track: track)
-        
+        var track = tracks[indexPath.row]
+        track.album = self.album
+        PlaybackPresenter.shared.startPlayback(from: self, track: track)
     }
 }
+
+//extension AlbumViewController: PlaylistHeaderCollectionReusableViewDelegate {
+//
+//}

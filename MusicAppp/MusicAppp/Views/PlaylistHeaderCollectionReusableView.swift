@@ -9,8 +9,10 @@ import SDWebImage
 import UIKit
 
 final class PlaylistHEaderCollectionReusableView: UICollectionReusableView {
+    // MARK: - Variables
     static let identifier = "PlaylistHEaderCollectionReusableView"
     
+    // MARK: - GUI Variables
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .semibold)
@@ -43,6 +45,7 @@ final class PlaylistHEaderCollectionReusableView: UICollectionReusableView {
         return imageView
     }()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
@@ -56,6 +59,7 @@ final class PlaylistHEaderCollectionReusableView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cicle
     override func layoutSubviews() {
         super.layoutSubviews()
         let imageSize: CGFloat = height/1.5
@@ -66,6 +70,7 @@ final class PlaylistHEaderCollectionReusableView: UICollectionReusableView {
         ownerLabel.frame = CGRect(x: 10, y: descriptionLabel.bottom, width: wight-20, height: 44)
     }
     
+    // MARK: - Methods
     func configure(with viewModel: PlaylistHeaderViewViewModel) {
         nameLabel.text = viewModel.playlistName
         ownerLabel.text = viewModel.ownerName

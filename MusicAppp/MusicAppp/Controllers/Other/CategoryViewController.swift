@@ -14,11 +14,11 @@ class CategoryViewController: UIViewController {
     private var playlists = [Playlist]()
     
     // MARK: - GUI Variables
-    
     private var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { (_, _) -> NSCollectionLayoutSection? in
-            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
+            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                                                 heightDimension: .fractionalHeight(1)))
             
             item.contentInsets = NSDirectionalEdgeInsets(
                 top: 5,
@@ -29,10 +29,11 @@ class CategoryViewController: UIViewController {
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .fractionalHeight(140)),
+                    heightDimension: .absolute(250)
+                ),
                 subitem: item,
-                count: 2)
-            
+                count: 2
+            )
             group.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
             
             return NSCollectionLayoutSection(group: group)
@@ -50,7 +51,6 @@ class CategoryViewController: UIViewController {
     
     
     // MARK: - Life Cicle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = category.name
@@ -79,6 +79,7 @@ class CategoryViewController: UIViewController {
     }
 }
 
+    // MARK: - Extensions UICollectionViewDelegate, UICollectionViewDataSource
 extension CategoryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return playlists.count

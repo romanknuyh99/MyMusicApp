@@ -45,12 +45,12 @@ class SearchResultsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func update(with results: [SearchResult]) {
-        let artists = results.filter({
-            switch $0 {
-            case .artist: return true
-            default: return false
-            }
-        })
+//        let artists = results.filter({
+//            switch $0 {
+//            case .artist: return true
+//            default: return false
+//            }
+//        })
         
         let albums = results.filter({
             switch $0 {
@@ -75,7 +75,6 @@ class SearchResultsViewController: UIViewController, UITableViewDelegate, UITabl
         
         self.sections = [
             SearchSection(title: "Songs", results: tracks),
-            SearchSection(title: "Artists", results: artists),
             SearchSection(title: "Playlists", results: playlists),
             SearchSection(title: "Albums", results: albums)
         ]
@@ -96,8 +95,8 @@ class SearchResultsViewController: UIViewController, UITableViewDelegate, UITabl
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         switch result {
-        case .artist(let model):
-            cell.textLabel?.text = model.name
+//        case .artist(let model):
+//            cell.textLabel?.text = model.name
         case .album(let model):
             cell.textLabel?.text = model.name
         case .track(let model):
