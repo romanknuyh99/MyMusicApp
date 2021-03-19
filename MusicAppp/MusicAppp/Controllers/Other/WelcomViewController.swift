@@ -18,7 +18,6 @@ class WelcomViewController: UIViewController {
         return button
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Spotify"
@@ -47,7 +46,6 @@ class WelcomViewController: UIViewController {
     }
     
     private func handleSingIn(success: Bool) {
-        // dfsdf
         guard success else {
             let alert = UIAlertController(title: "Oops", message: "Something went wrong when signing in.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dissmiss", style: .cancel, handler: nil))

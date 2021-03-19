@@ -9,8 +9,22 @@ import UIKit
 import SDWebImage
 
 class CategoryCollectionViewCell: UICollectionViewCell {
+    // MARK: - Variables
     static let identifier = "CategoryCollectionViewCell"
     
+    private let colors: [UIColor] = [
+        .systemPink,
+        .systemRed,
+        .systemBlue,
+        .systemPurple,
+        .systemOrange,
+        .systemGray,
+        .systemYellow,
+        .darkGray,
+        .systemTeal
+    ]
+    
+    // MARK: - GUI Variables
     private let imageView: UIImageView = {
        let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
@@ -28,18 +42,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let colors: [UIColor] = [
-        .systemPink,
-        .systemRed,
-        .systemBlue,
-        .systemPurple,
-        .systemOrange,
-        .systemGray,
-        .systemYellow,
-        .darkGray,
-        .systemTeal
-    ]
-    
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.layer.cornerRadius = 8
@@ -74,6 +77,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             height: contentView.height/2)
     }
     
+    // MARK: - Methods
     func configure(with viewModel: CategoryCollectionViewCellViewModel) {
         label.text = viewModel.title
         imageView.sd_setImage(with: viewModel.artworkURL, completed: nil)

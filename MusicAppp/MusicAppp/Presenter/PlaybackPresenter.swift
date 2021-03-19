@@ -15,13 +15,14 @@ protocol PlayerDataSource: AnyObject {
 }
 
 final class PlaybackPresenter {
+    // MARK: - Variables
     static let shared = PlaybackPresenter()
     
     private var track: AudioTrack?
     private var tracks = [AudioTrack]()
     
-    var index = 0
-    
+    var player: AVPlayer?
+    var playerQueue: AVQueuePlayer?
     var currentTrack: AudioTrack? {
         if let track = track, tracks.isEmpty {
             return track
@@ -32,13 +33,11 @@ final class PlaybackPresenter {
         
         return nil
     }
-    
     var playerVC: PlayerViewController?
     
-    var player: AVPlayer?
-    var playerQueue: AVQueuePlayer?
+    var index = 0
     
-    
+    // MARK: - Methods
     func startPlayback(from viewController: UIViewController, track: AudioTrack) {
         guard let url = URL(string: track.preview_url ?? "" ) else {
             return
@@ -79,6 +78,7 @@ final class PlaybackPresenter {
     }
 }
 
+// MARK: - Extensions
 extension PlaybackPresenter: PlayerViewControllerDelegate {
     func didTapPlayPause() {
         if let player = player {

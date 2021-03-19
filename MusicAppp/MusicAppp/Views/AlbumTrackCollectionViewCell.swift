@@ -35,7 +35,7 @@ class AlbumTrackCollectionViewCell: UICollectionViewCell {
         
         return label
     }()
-    
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .secondarySystemBackground
@@ -50,6 +50,7 @@ class AlbumTrackCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cicle
     override func layoutSubviews() {
         super.layoutSubviews()
         trackNameLabel.frame = CGRect(
@@ -72,6 +73,7 @@ class AlbumTrackCollectionViewCell: UICollectionViewCell {
         artistNameLabel.text = nil
     }
     
+    //MARK: - Methods
     func configure(with viewModel: AlbumCollectionViewCellViewModel) {
         trackNameLabel.text = viewModel.name
         artistNameLabel.text = viewModel.artistName

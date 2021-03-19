@@ -20,10 +20,11 @@ struct PlayerControlViewViewModel {
 }
 
 final class PlayerControlsView: UIView {
-    
+    // MARK: - Variables
     private var isPlaying = true
     weak var delegate: PlayerControlsViewDelegate?
     
+    // MARK: - GUI Variables
     private let volumeSlider: UISlider = {
        let slider = UISlider()
         slider.value = 0.5
@@ -77,28 +78,49 @@ final class PlayerControlsView: UIView {
         return button
     }()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
-        addSubview(nameLabel)
-        addSubview(subtitleLabel)
+        addSubview(self.nameLabel)
+        addSubview(self.subtitleLabel)
         
-        addSubview(volumeSlider)
-        volumeSlider.addTarget(self, action: #selector(didSlideSlider), for: .valueChanged)
+        addSubview(self.volumeSlider)
+        volumeSlider.addTarget(self, action: #selector(self.didSlideSlider), for: .valueChanged)
         
         addSubview(backButton)
         addSubview(nextButton)
         addSubview(playPauseButton)
         
-        backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
-        nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
-        playPauseButton.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(self.didTapBack), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(self.didTapNext), for: .touchUpInside)
+        playPauseButton.addTarget(self, action: #selector(self.didTapPlayPause), for: .touchUpInside)
         
         clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        nameLabel.frame = CGRect(x: 0, y: 0, width: wight, height: 50)
+        subtitleLabel.frame = CGRect(x: 0, y: nameLabel.bottom+10, width: wight, height: 50)
+        
+        volumeSlider.frame = CGRect(x: 10, y: subtitleLabel.bottom+20, width: wight-20, height: 44)
+        
+        let buttonSize: CGFloat = 60
+        playPauseButton.frame = CGRect(x: (wight - buttonSize)/2, y: volumeSlider.bottom + 30, width: buttonSize, height: buttonSize)
+        backButton.frame = CGRect(x: playPauseButton.left-80-buttonSize, y: playPauseButton.top, width: buttonSize, height: buttonSize)
+        nextButton.frame = CGRect(x: playPauseButton.right+80, y: playPauseButton.top, width: buttonSize, height: buttonSize)
+    }
+    
+    //MARK: - Methods
+    func configure(with viewModel: PlayerControlViewViewModel) {
+        nameLabel.text = viewModel.title
+        subtitleLabel.text = viewModel.subtitle
     }
     
     @objc private func didSlideSlider(_ slider: UISlider) {
@@ -117,30 +139,10 @@ final class PlayerControlsView: UIView {
     @objc private func didTapPlayPause() {
         self.isPlaying = !isPlaying
         delegate?.playerControlsViewDidTapPlayPauseButton(self)
-        
         //Update icon
         let pause = UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34, weight: .regular))
         let play = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34, weight: .regular))
         
         playPauseButton.setImage(isPlaying ? pause : play, for: .normal)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        nameLabel.frame = CGRect(x: 0, y: 0, width: wight, height: 50)
-        subtitleLabel.frame = CGRect(x: 0, y: nameLabel.bottom+10, width: wight, height: 50)
-        
-        volumeSlider.frame = CGRect(x: 10, y: subtitleLabel.bottom+20, width: wight-20, height: 44)
-        
-        let buttonSize: CGFloat = 60
-        playPauseButton.frame = CGRect(x: (wight - buttonSize)/2, y: volumeSlider.bottom + 30, width: buttonSize, height: buttonSize)
-        backButton.frame = CGRect(x: playPauseButton.left-80-buttonSize, y: playPauseButton.top, width: buttonSize, height: buttonSize)
-        nextButton.frame = CGRect(x: playPauseButton.right+80, y: playPauseButton.top, width: buttonSize, height: buttonSize)
-    }
-    
-    func configure(with viewModel: PlayerControlViewViewModel) {
-        nameLabel.text = viewModel.title
-        subtitleLabel.text = viewModel.subtitle
     }
 }

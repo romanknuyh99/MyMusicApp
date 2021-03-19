@@ -8,8 +8,10 @@
 import UIKit
 
 class RecommendedTrackCollectionViewCell: UICollectionViewCell {
+    // MARK: - Variables
     static let identifier = "RecommendedTrackCollectionViewCell"
     
+    //MARK: - GUI Variables
     private let albumCoverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
@@ -47,6 +49,7 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .secondarySystemBackground
@@ -62,6 +65,7 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cicle
     override func layoutSubviews() {
         super.layoutSubviews()
         albumCoverImageView.frame = CGRect(
@@ -90,6 +94,7 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
         artistNameLabel.text = nil
     }
     
+    // MARK: - Methods
     func configure(with viewModel: RecommendedTrackCellViewVodel) {
         trackNameLabel.text = viewModel.name
         albumCoverImageView.sd_setImage(with: viewModel.artworkURL, completed: nil)

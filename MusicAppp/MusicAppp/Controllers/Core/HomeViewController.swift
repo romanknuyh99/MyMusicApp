@@ -73,10 +73,6 @@ class HomeViewController: UIViewController {
         collectionView.register(
             RecommendedTrackCollectionViewCell.self,
             forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier)
-        collectionView.register(
-            TitleHeaderCollectionReusableView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
@@ -254,27 +250,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             vc.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(vc, animated: true)
         case .recommendedTracks:
-//            let recommended = tracks[indexPath.row]
-//            let vc =
-//            vc.title = album.name
-//            vc.navigationItem.largeTitleDisplayMode = .never
-//            navigationController?.pushViewController(vc, animated: true)
+            let recommended = tracks[indexPath.row]
+            PlaybackPresenter.shared.startPlayback(from: self, track: recommended)
             break
         }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: TitleHeaderCollectionReusableView.identifier,
-            for: indexPath
-        ) as? TitleHeaderCollectionReusableView, kind == UICollectionView.elementKindSectionHeader else {
-                return UICollectionReusableView()
-            }
-        let section = indexPath.section
-        let model = sections[section].title
-        header.configure(with: model)
-        return header
     }
     
     static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
@@ -357,7 +336,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             
-            
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
@@ -391,7 +369,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPaging
             return section
-            
         }
     }
 }

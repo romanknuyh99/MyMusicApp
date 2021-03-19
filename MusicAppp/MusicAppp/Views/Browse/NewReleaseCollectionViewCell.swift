@@ -58,8 +58,7 @@ class NewReleaseCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: -
-    
+    // MARK: - Life Cicle
     override func layoutSubviews() {
         super.layoutSubviews()
         let imageSize: CGFloat = contentView.height-10
@@ -102,6 +101,7 @@ class NewReleaseCollectionViewCell: UICollectionViewCell {
         albumCoverImageView.image = nil
     }
     
+    // MARK: - Methods
     func configure(with viewModel: NewReleasesCellViewModel) {
         albumNameLabel.text = viewModel.name
         artistNameLabel.text = viewModel.artistName

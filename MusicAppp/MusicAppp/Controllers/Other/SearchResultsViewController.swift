@@ -95,8 +95,6 @@ class SearchResultsViewController: UIViewController, UITableViewDelegate, UITabl
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         switch result {
-//        case .artist(let model):
-//            cell.textLabel?.text = model.name
         case .album(let model):
             cell.textLabel?.text = model.name
         case .track(let model):

@@ -44,7 +44,6 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        contentView.backgroundColor = .secondarySystemBackground
         contentView.addSubview(playlistCoverImageView)
         contentView.addSubview(playlistNameLabel)
         contentView.addSubview(creatorNameLabel)
@@ -55,6 +54,7 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cicle
     override func layoutSubviews() {
         super.layoutSubviews()
         creatorNameLabel.frame = CGRect(
@@ -78,7 +78,6 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
         )
     }
     
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         
@@ -87,6 +86,7 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
         creatorNameLabel.text = nil
     }
     
+    // MARK: - Methods
     func configure(with viewModel: FeaturedPlaylistCellViewModel) {
         playlistNameLabel.text = viewModel.name
         playlistCoverImageView.sd_setImage(with: viewModel.artworkURL, completed: nil)
